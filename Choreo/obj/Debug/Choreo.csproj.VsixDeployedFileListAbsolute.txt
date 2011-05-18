@@ -1,7 +1,0 @@
-C:\Users\Root\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Senthil Kumar Selvaraj\Choreo\0.1\\Choreo.dll
-C:\Users\Root\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Senthil Kumar Selvaraj\Choreo\0.1\\IronPython.dll
-C:\Users\Root\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Senthil Kumar Selvaraj\Choreo\0.1\\Microsoft.Dynamic.dll
-C:\Users\Root\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Senthil Kumar Selvaraj\Choreo\0.1\\Microsoft.Scripting.dll
-C:\Users\Root\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Senthil Kumar Selvaraj\Choreo\0.1\\Choreo.pkgdef
-C:\Users\Root\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Senthil Kumar Selvaraj\Choreo\0.1\\extension.vsixmanifest
-C:\Users\Root\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Senthil Kumar Selvaraj\Choreo\0.1\\Choreo.pdb

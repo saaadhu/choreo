@@ -97,8 +97,8 @@ namespace Choreo
                 mcs.AddCommand( menuToolWin );
             }
 
-            MacroManager.Initialize(this, mcs);
-            MacroManager.LoadFile(@"E:\oss\choreo\Samples\sample.py");
+            MacroManager.Initialize(this, @"E:\oss\choreo\Samples");
+            MacroManager.LoadMacros();
 
             var registerPriorityCommandTarget = (IVsRegisterPriorityCommandTarget) GetService(typeof(SVsRegisterPriorityCommandTarget));
 

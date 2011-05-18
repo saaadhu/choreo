@@ -15,15 +15,15 @@ namespace Choreo
     static class MacroManager
     {
         static ChoreoPackage package;
-        static OleMenuCommandService cmdService;
         static Dictionary<uint, string> commandIdFunctionMap = new Dictionary<uint, string>();
         static string loadPath;
         static DTE2 dte;
 
-        public static void Initialize(ChoreoPackage otherPackage, OleMenuCommandService otherCmdService)
+        public static void Initialize(ChoreoPackage otherPackage, string otherLoadPath)
         {
             package = otherPackage;
-            cmdService = otherCmdService;
+            loadPath = otherLoadPath;
+
             dte = (DTE2)Package.GetGlobalService(typeof(DTE));
         }
 
@@ -32,16 +32,16 @@ namespace Choreo
             return commandIdFunctionMap.ContainsKey(cmdId);
         }
 
-        public static void LoadFile(string path)
+        public static void LoadMacros()
         {
-            loadPath = path;
-            var text = File.ReadAllText(path);
-
-            using(var pythonHost = new PythonHost())
+            foreach (var pythonFile in Directory.EnumerateFiles(loadPath, "*.py"))
             {
-                pythonHost.AddSharedObject("dte", dte); 
-                var functions = pythonHost.GetFunctions(text);
-                RegisterCommands(functions);
+                using (var pythonHost = new PythonHost())
+                {
+                    pythonHost.AddSharedObject("dte", dte);
+                    var functions = pythonHost.GetFullyQualifiedFunctionNamesInFile(pythonFile);
+                    RegisterCommands(functions);
+                }
             }
         }
 
@@ -69,13 +69,12 @@ namespace Choreo
             }
         }
 
-        private static void Execute(string function)
+        private static void Execute(string fullyQualifiedFunctionName)
         {
             using (var pythonHost = new PythonHost())
             {
                 pythonHost.AddSharedObject("dte", dte);
-                pythonHost.Execute(File.ReadAllText(loadPath));
-                pythonHost.Execute(function + "()");
+                pythonHost.ExecuteFunctionInFile(loadPath, fullyQualifiedFunctionName);
             }
         }
     }

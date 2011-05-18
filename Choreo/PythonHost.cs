@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Scripting.Hosting;
 using IronPython.Hosting;
+using IronPython.Runtime;
+using System.IO;
 
 namespace Choreo
 {
@@ -34,6 +36,33 @@ namespace Choreo
         {
             var source = engine.CreateScriptSourceFromString(code);
             return source.Execute<T>();
+        }
+
+        public void ExecuteFunctionInFile(string loadPath, string fullyQualifiedFunctionName)
+        {
+            var fileNameAndFunctionName = fullyQualifiedFunctionName.Split('.');
+            var fullFilePath = Path.ChangeExtension(Path.Combine(loadPath, fileNameAndFunctionName[0]), "py");
+
+            var source = engine.CreateScriptSourceFromFile(fullFilePath);
+            var scope = engine.CreateScope(sharedObjects);
+            source.Execute(scope);
+
+            var functionCallSource = engine.CreateScriptSourceFromString(fileNameAndFunctionName[1] + "()");
+            functionCallSource.Execute(scope);
+        }
+
+        public IEnumerable<string> GetFullyQualifiedFunctionNamesInFile(string fileName)
+        {
+            var source = engine.CreateScriptSourceFromFile(fileName);
+            var moduleName = Path.GetFileNameWithoutExtension(fileName);
+            var scope = engine.CreateScope(sharedObjects);
+            source.Execute(scope);
+
+            var items = scope.GetItems();
+
+            return items.Where(item => item.Value is PythonFunction)
+                .Select(kvp => (PythonFunction)kvp.Value)
+                .Select(function => moduleName + "." + function.func_name);
         }
 
         public IEnumerable<string> GetFunctions(string code)
