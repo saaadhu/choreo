@@ -35,7 +35,7 @@ namespace Choreo
     // This attribute registers a tool window exposed by this package.
     [ProvideToolWindow(typeof(MyToolWindow))]
     [Guid(GuidList.guidChoreoPkgString)]
-    //[ProvideAutoLoad(UIContextGuids.NoSolution)]
+    [ProvideAutoLoad(UIContextGuids.NoSolution)]
     public sealed class ChoreoPackage : Package, IOleCommandTarget
     {
         /// <summary>

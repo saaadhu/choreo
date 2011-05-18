@@ -1,5 +1,5 @@
 def Senthil():
-	pass
+	dte.Debugger.Go()
 
 def Jobin():
 	dte.Quit()
