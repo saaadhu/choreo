@@ -18,12 +18,14 @@ namespace Choreo
         static Dictionary<uint, string> commandIdFunctionMap = new Dictionary<uint, string>();
         static string loadPath;
         static DTE2 dte;
+        static IVsProfferCommands4 profferCommands;
 
         public static void Initialize(ChoreoPackage otherPackage, string otherLoadPath)
         {
             package = otherPackage;
             loadPath = otherLoadPath;
 
+            profferCommands = (IVsProfferCommands4)Package.GetGlobalService(typeof(IVsProfferCommands));
             dte = (DTE2)Package.GetGlobalService(typeof(DTE));
         }
 
@@ -34,15 +36,19 @@ namespace Choreo
 
         public static void LoadMacros()
         {
+            var existingMacros = GetMacros().ToArray();
+
             foreach (var pythonFile in Directory.EnumerateFiles(loadPath, "*.py"))
             {
                 using (var pythonHost = new PythonHost())
                 {
                     pythonHost.AddSharedObject("dte", dte);
                     var functions = pythonHost.GetFullyQualifiedFunctionNamesInFile(pythonFile);
-                    RegisterCommands(functions);
+                    RegisterCommands(functions, existingMacros);
                 }
             }
+
+            RemoveZombieMacros(existingMacros);
         }
 
         public static void Run(uint nCmdId)
@@ -51,21 +57,46 @@ namespace Choreo
             Execute(function);
         }
 
-        private static void RegisterCommands(IEnumerable<string> functions)
+        private static void RegisterCommands(IEnumerable<string> functions, IEnumerable<Command> existingMacros)
         {
             foreach (var function in functions)
             {
-                var profferCommands = (IVsProfferCommands4)Package.GetGlobalService(typeof(IVsProfferCommands));
-                var pkgGuid = Guid.Parse(GuidList.guidChoreoPkgString);
-                uint cmdId;
                 var commandName = "Choreo." + function;
-                profferCommands.RemoveNamedCommand(commandName);
+                int commandId = CreateOrAttachToExistingCommand(commandName, existingMacros);
+                commandIdFunctionMap[(uint)commandId] = function;
+            }
+        }
 
-                var guid = GuidList.guidChoreoCmdSet;
+        static void RemoveZombieMacros(IEnumerable<Command> existingMacros)
+        {
+            var commandsToBeDeleted = existingMacros.Where(e => !commandIdFunctionMap.ContainsKey((uint)e.ID));
+            foreach (var command in commandsToBeDeleted)
+            {
+                profferCommands.RemoveNamedCommand(command.Name);
+            }
+        }
 
-                profferCommands.AddNamedCommand(ref pkgGuid, ref guid, commandName, out cmdId, commandName, function, null, null, 0, 0, 0, 0, null);
-                var command = dte.Commands.Item(commandName);
-                commandIdFunctionMap[cmdId] = function;
+        private static int CreateOrAttachToExistingCommand(string commandName, IEnumerable<Command> existingMacros)
+        {
+            var existingMacroWithSameName = existingMacros.SingleOrDefault(m => m.Name == commandName);
+
+            if (existingMacroWithSameName != null)
+                return existingMacroWithSameName.ID;
+
+            var pkgGuid = Guid.Parse(GuidList.guidChoreoPkgString);
+            uint cmdId;
+            var guid = GuidList.guidChoreoCmdSet;
+            profferCommands.AddNamedCommand(ref pkgGuid, ref guid, commandName, out cmdId, commandName, commandName, null, null, 0, 0, 0, 0, null);
+            return (int)cmdId;
+        }
+
+
+        private static IEnumerable<Command> GetMacros()
+        {
+            foreach (Command command in dte.Commands)
+            {
+                if (command.Guid == GuidList.guidChoreoCmdSetString)
+                    yield return command;
             }
         }
 
