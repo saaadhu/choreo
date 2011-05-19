@@ -11,6 +11,9 @@ using Microsoft.VisualStudio.Shell;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.CommandBars;
+using System.Reflection;
+using System.Windows.Forms;
+using System.IO;
 
 namespace Choreo
 {
@@ -97,7 +100,10 @@ namespace Choreo
             //    mcs.AddCommand( menuToolWin );
             //}
 
-            MacroManager.Initialize(this, @"E:\oss\choreo\Samples");
+            var assemblyLoadPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var macrosPath = Path.Combine(assemblyLoadPath, "Macros");
+
+            MacroManager.Initialize(this, macrosPath);
             MacroManager.LoadMacros();
 
             var registerPriorityCommandTarget = (IVsRegisterPriorityCommandTarget) GetService(typeof(SVsRegisterPriorityCommandTarget));

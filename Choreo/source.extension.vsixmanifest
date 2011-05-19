@@ -15,5 +15,6 @@
   <References />
   <Content>
     <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
+    <CustomExtension Type="Macros">Macros\sample.py</CustomExtension>
   </Content>
 </Vsix>
