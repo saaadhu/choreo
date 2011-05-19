@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Shell;
 using EnvDTE80;
 using Microsoft.VisualStudio;
 using System.ComponentModel.Design;
+using System.Reflection;
 
 namespace Choreo
 {
@@ -20,13 +21,20 @@ namespace Choreo
         static DTE2 dte;
         static IVsProfferCommands4 profferCommands;
 
-        public static void Initialize(ChoreoPackage otherPackage, string otherLoadPath)
+        public static void Initialize(ChoreoPackage otherPackage)
         {
             package = otherPackage;
-            loadPath = otherLoadPath;
+            loadPath = GetMacrosPath();
 
             profferCommands = (IVsProfferCommands4)Package.GetGlobalService(typeof(IVsProfferCommands));
             dte = (DTE2)Package.GetGlobalService(typeof(DTE));
+        }
+
+        private static string GetMacrosPath()
+        {
+            var assemblyLoadPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var macrosPath = Path.Combine(assemblyLoadPath, "Macros");
+            return macrosPath;
         }
 
         public static bool IsKnownCmdId(uint cmdId)
@@ -95,7 +103,8 @@ namespace Choreo
         {
             foreach (Command command in dte.Commands)
             {
-                if (command.Guid == GuidList.guidChoreoCmdSetString)
+                // Don't include "Refresh Choreo" in the list of macros, even if it's in the same cmd set.
+                if (command.Guid == GuidList.guidChoreoCmdSetString && command.ID != PkgCmdIDList.cmdidMyCommand)
                     yield return command;
             }
         }

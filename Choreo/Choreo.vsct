@@ -55,36 +55,24 @@
     <!--Buttons section. -->
     <!--This section defines the elements the user can interact with, like a menu command or a button 
         or combo box in a toolbar. -->
-    <!--<Buttons>
-      --><!--To define a menu group you have to specify its ID, the parent menu and its display priority. 
-          The command is visible and enabled by default. If you need to change the visibility, status, etc, you can use
-          the CommandFlag node.
-          You can add more than one CommandFlag node e.g.:
-              <CommandFlag>DefaultInvisible</CommandFlag>
-              <CommandFlag>DynamicVisibility</CommandFlag>
-          If you do not want an image next to your command, remove the Icon node or set it to <Icon guid="guidOfficeIcon" id="msotcidNoIcon" /> --><!--
-
-      --><!--<Button guid="guidChoreoCmdSet" id="cmdidMyCommand" priority="0x0100" type="Button">
+    <Buttons>
+      <Button guid="guidChoreoCmdSet" id="cmdidMyCommand" priority="0x0100" type="Button">
         <Parent guid="guidChoreoCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic1" />
+        <Icon guid="guidOfficeIcon" id="msotcidNoIcon" />
         <Strings>
           <CommandName>cmdidMyCommand</CommandName>
-          <ButtonText>Choreo</ButtonText>
+          <ButtonText>Refresh Choreo</ButtonText>
         </Strings>
-      </Button>--><!--
-
-
-      --><!--<Button guid="guidChoreoCmdSet" id="cmdidMyTool" priority="0x0100" type="Button">
+      </Button>
+      <!--<Button guid="guidChoreoCmdSet" id="cmdidMyTool" priority="0x0100" type="Button">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
         <Icon guid="guidImages" id="bmpPic2" />
         <Strings>
           <CommandName>cmdidMyTool</CommandName>
           <ButtonText>Choreo Explorer</ButtonText>
         </Strings>
-      </Button>--><!--
-
-
-    </Buttons>-->
+      </Button>-->
+    </Buttons>
    
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
@@ -111,8 +99,8 @@
     <GuidSymbol name="guidChoreoCmdSet" value="{77ab6c12-3af4-43db-98df-e3969a5e9511}">
 
       <IDSymbol name="MyMenuGroup" value="0x1020" />
-      <!--<IDSymbol name="cmdidMyCommand" value="0x0100" />
-      <IDSymbol name="cmdidMyTool" value="0x0101" />-->
+      <IDSymbol name="cmdidMyCommand" value="0x0100" />
+      <!-- <IDSymbol name="cmdidMyTool" value="0x0101" />-->
     </GuidSymbol>
     
     

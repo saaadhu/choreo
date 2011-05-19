@@ -86,24 +86,20 @@ namespace Choreo
             Trace.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
 
-            // Add our command handlers for menu (commands must exist in the .vsct file)
-            //OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            //if ( null != mcs )
-            //{
-            //    // Create the command for the menu item.
-            //    CommandID menuCommandID = new CommandID(GuidList.guidChoreoCmdSet, (int)PkgCmdIDList.cmdidMyCommand);
-            //    MenuCommand menuItem = new MenuCommand(MenuItemCallback, menuCommandID );
-            //    mcs.AddCommand( menuItem );
-            //    // Create the command for the tool window
-            //    CommandID toolwndCommandID = new CommandID(GuidList.guidChoreoCmdSet, (int)PkgCmdIDList.cmdidMyTool);
-            //    MenuCommand menuToolWin = new MenuCommand(ShowToolWindow, toolwndCommandID);
-            //    mcs.AddCommand( menuToolWin );
-            //}
+            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            if ( null != mcs )
+            {
+                // Create the command for the menu item.
+                CommandID menuCommandID = new CommandID(GuidList.guidChoreoCmdSet, (int)PkgCmdIDList.cmdidMyCommand);
+                MenuCommand menuItem = new MenuCommand(MenuItemCallback, menuCommandID );
+                mcs.AddCommand( menuItem );
+                //// Create the command for the tool window
+                //CommandID toolwndCommandID = new CommandID(GuidList.guidChoreoCmdSet, (int)PkgCmdIDList.cmdidMyTool);
+                //MenuCommand menuToolWin = new MenuCommand(ShowToolWindow, toolwndCommandID);
+                //mcs.AddCommand( menuToolWin );
+            }
 
-            var assemblyLoadPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var macrosPath = Path.Combine(assemblyLoadPath, "Macros");
-
-            MacroManager.Initialize(this, macrosPath);
+            MacroManager.Initialize(this);
             MacroManager.LoadMacros();
 
             var registerPriorityCommandTarget = (IVsRegisterPriorityCommandTarget) GetService(typeof(SVsRegisterPriorityCommandTarget));
@@ -121,22 +117,7 @@ namespace Choreo
         /// </summary>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            // Show a Message Box to prove we were here
-            IVsUIShell uiShell = (IVsUIShell)GetService(typeof(SVsUIShell));
-            Guid clsid = Guid.Empty;
-            int result;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(
-                       0,
-                       ref clsid,
-                       "Choreo",
-                       string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.ToString()),
-                       string.Empty,
-                       0,
-                       OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                       OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
-                       OLEMSGICON.OLEMSGICON_INFO,
-                       0,        // false
-                       out result));
+            MacroManager.LoadMacros();
         }
 
         class MacroCommandTarget : IOleCommandTarget
