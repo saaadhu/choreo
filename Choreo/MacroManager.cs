@@ -44,6 +44,8 @@ namespace Choreo
 
         public static void LoadMacros()
         {
+            commandIdFunctionMap.Clear();
+
             var existingMacros = GetMacros().ToArray();
 
             foreach (var pythonFile in Directory.EnumerateFiles(loadPath, "*.py"))
@@ -101,11 +103,13 @@ namespace Choreo
 
         private static IEnumerable<Command> GetMacros()
         {
+            var cmdSetGuid = "{" + GuidList.guidChoreoCmdSetString.ToUpperInvariant() + "}";
+
             foreach (Command command in dte.Commands)
             {
                 // Don't include "Refresh Choreo" in the list of macros, even if it's in the same cmd set.
-                if (command.Guid == GuidList.guidChoreoCmdSetString && command.ID != PkgCmdIDList.cmdidMyCommand)
-                    yield return command;
+                if (command.Guid == cmdSetGuid && command.ID != PkgCmdIDList.cmdidMyCommand)
+                        yield return command;
             }
         }
 
