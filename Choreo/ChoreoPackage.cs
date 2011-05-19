@@ -84,18 +84,18 @@ namespace Choreo
             base.Initialize();
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
-            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if ( null != mcs )
-            {
-                // Create the command for the menu item.
-                CommandID menuCommandID = new CommandID(GuidList.guidChoreoCmdSet, (int)PkgCmdIDList.cmdidMyCommand);
-                MenuCommand menuItem = new MenuCommand(MenuItemCallback, menuCommandID );
-                mcs.AddCommand( menuItem );
-                // Create the command for the tool window
-                CommandID toolwndCommandID = new CommandID(GuidList.guidChoreoCmdSet, (int)PkgCmdIDList.cmdidMyTool);
-                MenuCommand menuToolWin = new MenuCommand(ShowToolWindow, toolwndCommandID);
-                mcs.AddCommand( menuToolWin );
-            }
+            //OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            //if ( null != mcs )
+            //{
+            //    // Create the command for the menu item.
+            //    CommandID menuCommandID = new CommandID(GuidList.guidChoreoCmdSet, (int)PkgCmdIDList.cmdidMyCommand);
+            //    MenuCommand menuItem = new MenuCommand(MenuItemCallback, menuCommandID );
+            //    mcs.AddCommand( menuItem );
+            //    // Create the command for the tool window
+            //    CommandID toolwndCommandID = new CommandID(GuidList.guidChoreoCmdSet, (int)PkgCmdIDList.cmdidMyTool);
+            //    MenuCommand menuToolWin = new MenuCommand(ShowToolWindow, toolwndCommandID);
+            //    mcs.AddCommand( menuToolWin );
+            //}
 
             MacroManager.Initialize(this, @"E:\oss\choreo\Samples");
             MacroManager.LoadMacros();
