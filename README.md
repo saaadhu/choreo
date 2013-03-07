@@ -11,7 +11,7 @@ Using Choreo
 
 Macros in choreo are just python functions. All .py files in %localappdata%\Atmel\AtmelStudio\<version>\Extensions\Senthil Kumar Selvaraj\Choreo\<version>\Macros are picked up, and functions in the files are recognized as macros.
 
-The functions show up as commands in Atmel Studio, named as Choreo.<filename>.<functionname>. You can then map keystrokes to them (Tools->Options->Keyboard and search for Choreo in the "Show Commands containing" textbox). Tools->Refresh Choreo reloads everything in the Macros directory, so you can add/modify macros without restarting Atmel Studio.
+The functions show up as commands in Atmel Studio, named as Choreo.&lt;filename&gt;.&lt;functionname&gt;. You can then map keystrokes to them (Tools->Options->Keyboard and search for Choreo in the "Show Commands containing" textbox). Tools->Refresh Choreo reloads everything in the Macros directory, so you can add/modify macros without restarting Atmel Studio.
 
 
 Changelog
