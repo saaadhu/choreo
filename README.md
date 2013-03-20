@@ -18,9 +18,11 @@ As an example, assuming you're running Atmel Studio 6.1 and Choreo 0.1,
 1. Launch Atmel Studio
 2. Create a new file, example.py, in %localappdata%\Atmel\AtmelStudio\6.1\Extensions\Senthil Kumar Selvaraj\Choreo\0.1\Macros, and save it with the following contents
 
-    def InsertChoreoRocks():
-	dte.ActiveDocument.Selection.Text = "Choreo Rocks"
+```python
 
+    def InsertChoreoRocks():
+	    dte.ActiveDocument.Selection.Text = "Choreo Rocks"
+```
 3. In Atmel Studio, click on Tools -> Refresh Choreo
 4. Open Tools -> Options -> Environment -> Keyboard, and enter Choreo in the "Show Commands Containing" textbox. You should see Choreo.example.InsertChoreoRocks in the list. Bind it to a keystroke, say Ctrl+Shift+C, by keying in the sequence in the "Press shortcut keys" textbox, and click Assign, then OK.
 5. In any open text document in Atmel Studio, hit Ctrl+Shift+C to run the macro, and you'll see the text "Choreo Rocks" gets inserted at the current cursor position.
