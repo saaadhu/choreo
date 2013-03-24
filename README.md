@@ -29,6 +29,30 @@ As an example, assuming you're running Atmel Studio 6.1 and Choreo 0.1,
 
 That's all there is to it. You can change code for an existing macro and run it right away. New functions and new .py files need a refresh (Tools -> Refresh Choreo) to show up in the commands list.
 
+
+### Use Atmel Studio SDK API from Choreo
+
+The DTE object covers most of the Visual Studio Shell APIs. There are no other objects injected into the Python environment, but you can always reference DLLs from the python files themselves. For Atmel Studio specific functionality, there is the Atmel Studio XDK (http://gallery.atmel.com/Partner). 
+
+The following snippet inserts the name of the device currently being debugged into the output window. It adds a reference to the SDK dll, imports a type, and then proceeds to call methods and access properties in that type. This also shows how you can use the VS output window as a console.
+
+```python
+import clr
+from System import DateTime
+from System.Diagnostics import Process
+
+clr.AddReferenceToFileAndPath("C:\Program Files (x86)\Atmel\Atmel Studio 6.1\extensions\Application\Atmel.Studio.Services.Interfaces.dll")
+from Atmel.Studio.Services import ATServiceProvider
+
+def InsertTargetName():
+    device = ATServiceProvider.TargetService2.GetLaunchedTarget().Device.Name
+    writeToOutputWindow(device)
+
+def writeToOutputWindow(message):
+    window = dte.Windows.Item("{34E76E81-EE4A-11D0-AE2E-00A0C90FFFC3}");
+    window.Object.ActivePane.OutputString(message);
+```
+
 Changelog
 ---------
 
