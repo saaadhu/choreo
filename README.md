@@ -1,4 +1,4 @@
-Choreo is an extension to Atmel Studio that lets uses write macros in python (IronPython, actually) to "choreograph" actions. The full Visual Studio automation API is available (except language services) to play with, in addition to the .NET BCL.
+Choreo is an extension to Atmel Studio that lets uses write macros in python (IronPython, actually) to "choreograph" actions. The full [Visual Studio automation API][1] is available (except language services) to play with, in addition to the .NET BCL.
 
 Some trivial examples of what it can do
 
@@ -58,3 +58,4 @@ Changelog
 
 0.1 Initial Version
 
+[1]: http://msdn.microsoft.com/en-us/library/vstudio/envdte.dte(v=vs.100).aspx
