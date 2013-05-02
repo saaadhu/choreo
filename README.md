@@ -1,5 +1,8 @@
 Choreo is an extension to Atmel Studio that lets uses write macros in python (IronPython, actually) to "choreograph" actions. The full [Visual Studio automation API][1] is available (except language services) to play with, in addition to the .NET BCL.
-
+Choreo injects the top level DTE Visual Studio Automation object into the Python environment in which macros run. This means that macros can just use "dte" to refer to the top level DTE object. Like so
+```python
+  dte.ActiveDocument.Selection.Text = "Choreo Rocks"
+```
 Some trivial examples of what it can do
 
 * Write current date/time at the current cursor position
