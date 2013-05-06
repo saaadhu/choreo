@@ -6,8 +6,41 @@ Choreo injects the top level DTE Visual Studio Automation object into the Python
 Some trivial examples of what it can do
 
 * Write current date/time at the current cursor position
+
+```python
+def InsertDateTime():
+    dte.ActiveDocument.Selection.Text = DateTime.Now.ToString()
+```
 * Launch a google search for the current highlighted word
+
+```python
+def SearchGoogle():
+    Process.Start("https://www.google.com/search?q=" + dte.ActiveDocument.Selection.Text)
+```
+
 * Do a "Run to Cursor" to the next line in the editor - useful for bypassing interrupts when debugging.
+
+```python
+def StepNextWithoutInterrupt():
+	dte.ExecuteCommand("Edit.LineDown")
+	dte.ExecuteCommand("Debug.RunToCursor")
+```
+
+* Replace current document's text with text from another source.
+
+```python
+def ReplaceWithNotepadContents():
+    sel = dte.ActiveDocument.Selection
+    sel.SelectAll()
+
+    tempFile = Path.GetTempFileName()
+    File.WriteAllText(tempFile, sel.Text)
+
+    p = Process.Start("C:\\Windows\\notepad.exe", tempFile)
+    p.WaitForExit()
+    
+    sel.Text = File.ReadAllText(tempFile)
+```
 
 Using Choreo
 -------------
